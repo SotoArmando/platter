@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg
+   width="20.5"
+   height="20.5"
+   viewBox="0 0 20.5 20.5"
+   fill="none"
+   version="1.1"
+   id="svg362"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg">
+  <g
+     clip-path="url(#clip0_525_377)"
+     id="g331">
+    <g
+       filter="url(#filter0_d_525_377)"
+       id="g329">
+      <circle
+         cx="10.25"
+         cy="10.25"
+         r="10.25"
+         fill="url(#paint0_radial_525_377)"
+         id="circle327"
+         style="fill:url(#paint0_radial_525_377)" />
+    </g>
+  </g>
+  <defs
+     id="defs360">
+    <filter
+       id="filter0_d_525_377"
+       x="-21"
+       y="-21"
+       width="62.5"
+       height="62.5"
+       filterUnits="userSpaceOnUse"
+       color-interpolation-filters="sRGB">
+      <feFlood
+         flood-opacity="0"
+         result="BackgroundImageFix"
+         id="feFlood333" />
+      <feColorMatrix
+         in="SourceAlpha"
+         type="matrix"
+         values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0"
+         result="hardAlpha"
+         id="feColorMatrix335" />
+      <feOffset
+         id="feOffset337" />
+      <feGaussianBlur
+         stdDeviation="10.5"
+         id="feGaussianBlur339" />
+      <feComposite
+         in2="hardAlpha"
+         operator="out"
+         id="feComposite341" />
+      <feColorMatrix
+         type="matrix"
+         values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.1 0"
+         id="feColorMatrix343" />
+      <feBlend
+         mode="normal"
+         in2="BackgroundImageFix"
+         result="effect1_dropShadow_525_377"
+         id="feBlend345" />
+      <feBlend
+         mode="normal"
+         in="SourceGraphic"
+         in2="effect1_dropShadow_525_377"
+         result="shape"
+         id="feBlend347" />
+    </filter>
+    <radialGradient
+       id="paint0_radial_525_377"
+       cx="0"
+       cy="0"
+       r="1"
+       gradientUnits="userSpaceOnUse"
+       gradientTransform="matrix(0,10.25,-10.25,0,10.25,10.25)">
+      <stop
+         stop-color="white"
+         id="stop350" />
+      <stop
+         offset="0.875"
+         stop-color="#F9F9F9"
+         id="stop352" />
+      <stop
+         offset="1"
+         stop-color="#D3D3D3"
+         id="stop354" />
+    </radialGradient>
+    <clipPath
+       id="clip0_525_377">
+      <rect
+         width="20.5"
+         height="20.5"
+         fill="#ffffff"
+         id="rect357"
+         x="0"
+         y="0" />
+    </clipPath>
+  </defs>
+</svg>
