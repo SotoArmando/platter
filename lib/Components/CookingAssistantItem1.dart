@@ -41,11 +41,11 @@ class _CookingAssistantItem1State extends State<CookingAssistantItem1> {
                   constraints: BoxConstraints(
                       minHeight: fontSizeNumber(0) * 4.577742699),
                   padding: EdgeInsets.only(
-                      bottom: fontSizeNumber(0) * 0.868192581,
-                      top: fontSizeNumber(0) * 0.552486188),
+                      bottom: fontSizeNumber(0) * 0.584846093,
+                      top: fontSizeNumber(0) * 0.304262036),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    mainAxisAlignment: MainAxisAlignment.start,
                     children: [
                       Textspace(
                         text: "Classic Chicken Noodle Soup",
@@ -55,6 +55,9 @@ class _CookingAssistantItem1State extends State<CookingAssistantItem1> {
                         fixProportion: 1.5,
                         style:
                             TextStyle(fontWeight: FontWeight.w600, height: 0),
+                      ),
+                      SizedBox(
+                        height: fontSizeNumber(0) * 0.647198106,
                       ),
                       Textspace(
                           text: "4 cups shredded chicken breast",

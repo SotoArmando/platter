@@ -41,7 +41,7 @@ class Textspace extends StatelessWidget {
     return Container(
       // color: Colors.blue[300],
       constraints: BoxConstraints(
-          maxHeight: headsize > 0
+          minHeight: headsize > 0
               ? fontSizeNumber(headsize)
               : (fixSize ? fontSizeNumber(size * fixProportion) : 0)),
       alignment: alignment,
@@ -52,6 +52,10 @@ class Textspace extends StatelessWidget {
               0),
           child: Text(
             "${text}",
+            softWrap: true,
+            textHeightBehavior:
+                const TextHeightBehavior(applyHeightToFirstAscent: false),
+            overflow: TextOverflow.visible,
             style: fontSize(size,
                 font: font, style: style, letterSpacing: letterSpacing),
           )),
