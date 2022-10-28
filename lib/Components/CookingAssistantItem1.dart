@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/container.dart';
 import 'package:flutter/src/widgets/framework.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:p_l_atter/Components/Textspace.dart';
 import 'package:p_l_atter/Resources/localconfig/platterfont.dart';
 
@@ -53,8 +54,8 @@ class _CookingAssistantItem1State extends State<CookingAssistantItem1> {
                         headsize: 0,
                         fixSize: true,
                         fixProportion: 1.5,
-                        style:
-                            TextStyle(fontWeight: FontWeight.w600, height: 0),
+                        style: GoogleFonts.inter(
+                            fontWeight: FontWeight.w600, height: 0),
                       ),
                       SizedBox(
                         height: fontSizeNumber(0) * 0.647198106,

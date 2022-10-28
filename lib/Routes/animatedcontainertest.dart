@@ -26,25 +26,10 @@ class _AnimatedcontainertestState extends State<Animatedcontainertest> {
               });
             },
             child: Text("Click me")),
-        AnimatedSwitcher(
-          duration: const Duration(milliseconds: 500),
-          transitionBuilder: (Widget child, Animation<double> animation) {
-            return FadeTransition(
-                opacity: Tween<double>(begin: 0.0, end: 1.0).animate(
-                  CurvedAnimation(
-                    parent: animation,
-                    curve: Interval(0.5, 1.0),
-                  ),
-                ),
-                child: child);
-          },
-          child: Container(
-              key: ValueKey<bool>(open),
-              child: open
-                  ? const CookingAssistantItem1()
-                  : const CookingAssistantItem2()),
-        ),
         CookingAssistantItem1(),
+        CookingAssistantItem2(),
+        CookingAssistantItem2(),
+        CookingAssistantItem2(),
         CookingAssistantItem2(),
       ],
     ));
