@@ -3,7 +3,7 @@ import 'dart:math';
 import 'package:flutter/cupertino.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-const num base = 14;
+const num base = 13;
 
 double proportionNumber(num index) {
   return pow(1.61803398875, index).toDouble();
@@ -25,6 +25,21 @@ double fontSizeNumber(num index) {
   bool prop = index % 2 == 1;
   num result = pow(1.2720196495141103, index) * base;
   return (prop ? result * pow(1.075, index) : result).toDouble();
+}
+
+double fontSizeNumberCeroTimes(num times) {
+  num index = 0;
+  bool prop = index % 2 == 1;
+  num result = pow(1.2720196495141103, index) * base;
+  return (prop ? result * pow(1.075, index) : result).toDouble() * times;
+}
+
+double PixelNumberfromFigma(num pixelFigma) {
+  num times = pixelFigma / 12.67;
+  num index = 0;
+  bool prop = index % 2 == 1;
+  num result = pow(1.2720196495141103, index) * base;
+  return (prop ? result * pow(1.075, index) : result).toDouble() * times;
 }
 
 TextStyle fontSize(num index,

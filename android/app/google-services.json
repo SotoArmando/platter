@@ -1,0 +1,46 @@
+{
+  "project_info": {
+    "project_number": "561889806891",
+    "project_id": "platter-51816",
+    "storage_bucket": "platter-51816.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:561889806891:android:2d1b2193e43d067844786e",
+        "android_client_info": {
+          "package_name": "com.example.p_l_atter"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "561889806891-r8jv0sge6sbqn0af3vpaab21sba4n56s.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAG4em-xI1Z0707g310XS4U4myxIWn0FrU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "561889806891-r8jv0sge6sbqn0af3vpaab21sba4n56s.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "561889806891-erdp3r3b2kb40cgipff8uhm06q35j0p7.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.pLAtter"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

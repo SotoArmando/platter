@@ -1,7 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:p_l_atter/Components/CookingAssistantItem1.dart';
-import 'package:p_l_atter/Components/CookingAssistantItem2.dart';
+import 'package:p_l_atter/Components/%5Bdeleted%5DCookingAssistantItem1.dart';
+import 'package:p_l_atter/Components/CookingAssistantItem.dart';
 import 'package:p_l_atter/Components/Textspace.dart';
 import 'package:p_l_atter/Resources/localconfig/platterfont.dart';
 
@@ -27,10 +27,10 @@ class _AnimatedcontainertestState extends State<Animatedcontainertest> {
             },
             child: Text("Click me")),
         CookingAssistantItem1(),
-        CookingAssistantItem2(),
-        CookingAssistantItem2(),
-        CookingAssistantItem2(),
-        CookingAssistantItem2(),
+        CookingAssistantItem(),
+        CookingAssistantItem(),
+        CookingAssistantItem(),
+        CookingAssistantItem(),
       ],
     ));
   }

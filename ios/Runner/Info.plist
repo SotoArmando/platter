@@ -16,6 +16,8 @@
 	<string>p_l_atter</string>
 	<key>CFBundlePackageType</key>
 	<string>APPL</string>
+	<key>GADApplicationIdentifier</key>
+	<string>ca-app-pub-6964849932542974~6314238357</string>
 	<key>CFBundleShortVersionString</key>
 	<string>$(FLUTTER_BUILD_NAME)</string>
 	<key>CFBundleSignature</key>
@@ -45,5 +47,20 @@
 	<false/>
 	<key>CADisableMinimumFrameDurationOnPhone</key>
 	<true/>
+	<key>FlutterDeepLinkingEnabled</key>
+	<true/>
+	<key>CFBundleURLTypes</key>
+	<array>
+    <dict>
+    <key>CFBundleTypeRole</key>
+    <string>Editor</string>
+    <key>CFBundleURLName</key>
+    <string>flutterbooksample.com</string>
+    <key>CFBundleURLSchemes</key>
+    <array>
+    <string>customscheme</string>
+    </array>
+    </dict>
+</array>
 </dict>
 </plist>

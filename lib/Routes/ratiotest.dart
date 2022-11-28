@@ -102,7 +102,7 @@ class Ratioscreen extends StatelessWidget {
                             child: Directionality(
                               textDirection: TextDirection.ltr,
                               child: SvgPicture.asset(
-                                "Platter/globe.svg",
+                                "assets/platter/globe.svg",
                                 height: fontSizeNumber(
                                     0.75 * pow(1.61803398875, 0)),
                                 color: Color.fromARGB(255, 0, 0, 0),
@@ -117,7 +117,7 @@ class Ratioscreen extends StatelessWidget {
                             child: Directionality(
                               textDirection: TextDirection.ltr,
                               child: SvgPicture.asset(
-                                "Platter/globe.svg",
+                                "assets/platter/globe.svg",
                                 height: fontSizeNumber(
                                     0.75 * pow(1.61803398875, 1)),
                                 color: Color.fromARGB(255, 0, 0, 0),
@@ -132,7 +132,7 @@ class Ratioscreen extends StatelessWidget {
                             child: Directionality(
                               textDirection: TextDirection.ltr,
                               child: SvgPicture.asset(
-                                "Platter/globe.svg",
+                                "assets/platter/globe.svg",
                                 height: fontSizeNumber(
                                     0.75 * pow(1.61803398875, 2)),
                                 color: Color.fromARGB(255, 0, 0, 0),
@@ -152,7 +152,7 @@ class Ratioscreen extends StatelessWidget {
                             child: Directionality(
                               textDirection: TextDirection.ltr,
                               child: SvgPicture.asset(
-                                "Platter/globe.svg",
+                                "assets/platter/globe.svg",
                                 height: fontSizeNumber(
                                     0.75 * pow(1.61803398875, 3)),
                                 color: Color.fromARGB(255, 0, 0, 0),
@@ -167,7 +167,7 @@ class Ratioscreen extends StatelessWidget {
                             child: Directionality(
                               textDirection: TextDirection.ltr,
                               child: SvgPicture.asset(
-                                "Platter/globe.svg",
+                                "assets/platter/globe.svg",
                                 height: fontSizeNumber(
                                     0.75 * pow(1.61803398875, 4)),
                                 color: Color.fromARGB(255, 0, 0, 0),
@@ -182,7 +182,7 @@ class Ratioscreen extends StatelessWidget {
                             child: Directionality(
                               textDirection: TextDirection.ltr,
                               child: SvgPicture.asset(
-                                "Platter/globe.svg",
+                                "assets/platter/globe.svg",
                                 height: fontSizeNumber(
                                     0.75 * pow(1.61803398875, 5)),
                                 color: Color.fromARGB(255, 0, 0, 0),
@@ -213,7 +213,7 @@ class Ratioscreen extends StatelessWidget {
                           child: Directionality(
                             textDirection: TextDirection.ltr,
                             child: SvgPicture.asset(
-                              "Platter/house.svg",
+                              "assets/platter/house.svg",
                               height: fontSizeNumber(0.75),
                               color: Color.fromARGB(255, 0, 0, 0),
                               matchTextDirection: true,
@@ -227,7 +227,7 @@ class Ratioscreen extends StatelessWidget {
                           child: Directionality(
                             textDirection: TextDirection.ltr,
                             child: SvgPicture.asset(
-                              "Platter/time.svg",
+                              "assets/platter/time.svg",
                               height: fontSizeNumber(0.75),
                               color: Color.fromARGB(255, 0, 0, 0),
                               matchTextDirection: true,
@@ -241,7 +241,7 @@ class Ratioscreen extends StatelessWidget {
                           child: Directionality(
                             textDirection: TextDirection.ltr,
                             child: SvgPicture.asset(
-                              "Platter/search.svg",
+                              "assets/platter/search.svg",
                               height: fontSizeNumber(0.75),
                               color: Color.fromARGB(255, 0, 0, 0),
                               matchTextDirection: true,
@@ -270,7 +270,7 @@ class Ratioscreen extends StatelessWidget {
                           child: Directionality(
                             textDirection: TextDirection.ltr,
                             child: SvgPicture.asset(
-                              "Platter/user.svg",
+                              "assets/platter/user.svg",
                               height:
                                   fontSizeNumber(0.75 * pow(1.61803398875, 3)),
                               color: Color.fromARGB(255, 15, 175, 255),
@@ -285,7 +285,7 @@ class Ratioscreen extends StatelessWidget {
                           child: Directionality(
                             textDirection: TextDirection.ltr,
                             child: SvgPicture.asset(
-                              "Platter/location.svg",
+                              "assets/platter/location.svg",
                               height:
                                   fontSizeNumber(0.75 * pow(1.61803398875, 0)),
                               color: Color.fromARGB(255, 0, 0, 0),
@@ -537,7 +537,7 @@ class Ratioscreen extends StatelessWidget {
                   child: Stack(
                     alignment: Alignment.center,
                     children: [
-                      SvgPicture.asset("Platter/whiteFrame.svg"),
+                      SvgPicture.asset("assets/platter/whiteFrame.svg"),
                       Container(
                           constraints: BoxConstraints(
                             maxHeight: fontSizeNumber(2),

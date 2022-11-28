@@ -33,9 +33,26 @@ dependencies:
 
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
+  # TODO: Add google_mobile_ads as a dependency
+  google_mobile_ads: ^1.2.0
+
   cupertino_icons: ^1.0.2
   flutter_svg: ^1.1.5
   google_fonts: ^3.0.1
+  bordered_text: ^2.0.0
+  http: 0.13.4
+  cancellation_token_http: ^1.1.0
+  cryptography: ^2.0.5
+  flutter_slidable: ^2.0.0
+  provider: ^6.0.4
+  flutter_launcher_icons: ^0.11.0
+  url_launcher: ^6.1.6
+  firebase_core: ^2.3.0
+  cloud_firestore: ^4.1.0
+  rive: ^0.9.1
+  firebase_auth: ^4.1.4
+  workmanager: ^0.5.1
+
 
 dev_dependencies:
   flutter_test:
@@ -61,7 +78,8 @@ flutter:
 
   # To add assets to your application, add an assets section, like this:
   assets:
-    - assets/Platter/
+    - assets/platter/
+    - assets/json/
     - google_fonts/
   #   - images/a_dot_ham.jpeg
 
