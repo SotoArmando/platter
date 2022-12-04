@@ -1,11 +1,11 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.example.p_l_atter">
+    package="com.sotoarmando.p_l_atter">
    <application
         android:label="Platter"
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher">
         <activity
-            android:name=".MainActivity"
+            android:name="com.sotoarmando.p_l_atter.MainActivity"
             android:exported="true"
             android:launchMode="singleTop"
             android:theme="@style/LaunchTheme"
@@ -26,7 +26,7 @@
             </intent-filter>
                     <!-- Deep linking -->
         <meta-data android:name="flutter_deeplinking_enabled" android:value="true" />
-        <intent-filter android:autoVerify="true">
+    <intent-filter android:autoVerify="true">
             <action android:name="android.intent.action.VIEW" />
             <category android:name="android.intent.category.DEFAULT" />
             <category android:name="android.intent.category.BROWSABLE" />

@@ -133,6 +133,8 @@ class RestClient {
       "format": "json",
       "oauth_token": oauth_token,
     };
+    print("params");
+    print(params);
 
     return api.request(params, null);
   }
@@ -161,7 +163,8 @@ class RestClient {
       "oauth_token": oauth_token,
       "recipe_id": recipe_id,
     };
-
+    // print("params");
+    // print(params);
     return api.request(params, null);
   }
 
@@ -213,8 +216,8 @@ class RestClient {
       params["search_expression"] = query;
     }
 
-    print("Request params");
-    print(params);
+    // print("Request params");
+    // print(params);
     return api.request(params, null);
   }
 
@@ -244,8 +247,8 @@ class RestClient {
       return api.request(params, canceltoken);
     }
 
-    print("Request params");
-    print(params);
+    // print("Request params");
+    // print(params);
     return api.request(params, null);
   }
 }

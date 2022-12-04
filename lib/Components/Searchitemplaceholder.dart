@@ -43,7 +43,7 @@ class _SearchitemplaceholderState extends State<Searchitemplaceholder> {
                           // height: PixelNumberfromFigma(25),
                           alignment: Alignment.centerLeft,
                           padding:
-                              EdgeInsets.only(left: PixelNumberfromFigma(8)),
+                              EdgeInsets.only(left: pixelNumberfromFigma(8)),
                           child: Text("",
                               style: GoogleFonts.inter(
                                   fontSize: fontSizeNumber(0))),

@@ -6,6 +6,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:p_l_atter/Components/Textspace.dart';
 import 'package:p_l_atter/GraphQl/Changenotifiers/Recipeid.dart';
 import 'package:p_l_atter/GraphQl/Changenotifiers/Requestor.dart';
+import 'package:p_l_atter/GraphQl/Changenotifiers/Savemodel.dart';
 import 'package:p_l_atter/GraphQl/Restclient.dart';
 import 'package:p_l_atter/Resources/localconfig/platterfont.dart';
 import 'package:provider/provider.dart';
@@ -19,18 +20,35 @@ class SearchResultItem extends StatefulWidget {
 }
 
 class _SearchResultItemState extends State<SearchResultItem> {
+  String name = "";
+  String author = "";
+  String id = "";
+  dynamic thumbnailurl = "";
+  Requestor? providedRequestor;
+  Savemodel? saveModel;
+  Recipeid? providedRecipeid;
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    name = widget.data?["recipe_name"] ?? "Classic Chicken Noodle Soup";
+    author = "@Myfatsecret";
+    id = widget.data?["recipe_id"] ?? "@Suggestic Premium";
+
+    thumbnailurl = widget.data?["recipe_image"] ?? "";
+    print("thumbnailurl");
+    providedRequestor = Provider.of<Requestor>(context, listen: false);
+    saveModel = Provider.of<Savemodel>(context, listen: false);
+    providedRecipeid = Provider.of<Recipeid>(context, listen: false);
+  }
+
   @override
   Widget build(BuildContext context) {
-    final String name =
-        widget.data?["recipe_name"] ?? "Classic Chicken Noodle Soup";
-    final String author = "@Myfatsecret";
-    final String id = widget.data?["recipe_id"] ?? "@Suggestic Premium";
-    final thumbnailurl = widget.data?["recipe_image"] ?? "";
-    var providedRequestor = Provider.of<Requestor>(context);
     return InkWell(
       child: Container(
-        margin: EdgeInsets.only(bottom: PixelNumberfromFigma(13)),
-        height: PixelNumberfromFigma(56),
+        margin: EdgeInsets.only(bottom: pixelNumberfromFigma(13)),
+        height: pixelNumberfromFigma(56),
         child: IntrinsicHeight(
             child: Row(
                 crossAxisAlignment: CrossAxisAlignment.center,
@@ -44,8 +62,8 @@ class _SearchResultItemState extends State<SearchResultItem> {
                       alignment: Alignment.center,
                       color: Color(0xffC1E7F6),
                       child: Container(
-                        width: PixelNumberfromFigma(47),
-                        height: PixelNumberfromFigma(45.38),
+                        width: pixelNumberfromFigma(47),
+                        height: pixelNumberfromFigma(45.38),
                         decoration: BoxDecoration(
                             shape: BoxShape.circle,
                             image: DecorationImage(
@@ -57,7 +75,7 @@ class _SearchResultItemState extends State<SearchResultItem> {
                 ],
               ),
               SizedBox(
-                width: PixelNumberfromFigma(13),
+                width: pixelNumberfromFigma(13),
               ),
               Expanded(
                   child: Column(
@@ -73,7 +91,7 @@ class _SearchResultItemState extends State<SearchResultItem> {
                     ),
                   ),
                   SizedBox(
-                    height: PixelNumberfromFigma(10),
+                    height: pixelNumberfromFigma(10),
                     child: Container(color: Colors.transparent),
                   ),
                   Flexible(
@@ -92,23 +110,33 @@ class _SearchResultItemState extends State<SearchResultItem> {
                 children: [
                   SvgPicture.asset(
                     "assets/platter/Vector0.svg",
-                    height: PixelNumberfromFigma(25),
+                    height: pixelNumberfromFigma(25),
                   ),
                   SizedBox(
-                    width: PixelNumberfromFigma(2.5),
+                    width: pixelNumberfromFigma(2.5),
                   )
                 ],
               )
             ])),
       ),
       onTap: () {
-        Provider.of<Recipeid>(context, listen: false).update(id);
         Navigator.pushNamed(context, '/details');
-        providedRequestor.addRequest("recipe_id $id",
+        providedRecipeid?.update(id);
+        providedRequestor?.addRequest("recipe_id $id",
             (CancellationToken token) => RestClient().recipesDetail(id),
             now: true);
 
-        Navigator.pushNamed(context, '/details');
+        Future(() async {
+          await Future<void>.delayed(const Duration(seconds: 5));
+          providedRequestor?.addRequest(
+              "addhistory${DateTime.now().millisecondsSinceEpoch}",
+              (CancellationToken token) => RestClient().addFavoriteToProfile(
+                    saveModel?.history["auth_token"]! ?? "",
+                    saveModel?.history["auth_secret"]! ?? "",
+                    id,
+                  ),
+              now: true);
+        });
       },
     );
   }

@@ -9,28 +9,42 @@ class Savemodel extends ChangeNotifier {
   /// Internal, private state of the cart.
   List<String> likes = [];
   List<String> focus = [];
+  List<String> userHistory = [];
   List<String> savePath = [];
   List<String> authToken = [];
   List<String> authSecret = [];
+  Map<String, String> history = {};
+  Map<String, Map<String, String>> collections = {};
 
   CollectionReference _users = FirebaseFirestore.instance.collection('User');
 
-  void addSignedUser(UserCredential credential) async {
+  Future<void> addSignedUser(UserCredential credential) async {
     var response = await RestClient()
         .profileCreate((credential.user?.uid ?? credential.user?.email)!);
+    var historyresponse = await RestClient().profileCreate(
+        "history${(credential.user?.uid ?? credential.user?.email)!}");
     var body = jsonDecode(response.body);
+    var historybody = jsonDecode(historyresponse.body);
     var auth_secret = body["profile"]["auth_secret"];
     var auth_token = body["profile"]["auth_token"];
-
+    history = {
+      "auth_secret": historybody["profile"]["auth_secret"],
+      "auth_token": historybody["profile"]["auth_token"],
+    };
     // Call the user's CollectionReference to add a new user
-    _users.add({
+    await _users.add({
       'uid': credential.user?.uid, // John Does
       'mail': credential.user?.email, // John Doe
       'focus': [],
       'likes': [],
+      'history_list': [],
       'has_verified_mail': credential.user?.emailVerified,
       'auth_secret': auth_secret, // Stokes and Sons
-      'auth_token': auth_token, // Stokes and Sons
+      'auth_token': auth_token,
+      'history': {
+        'auth_secret': historybody["profile"]["auth_secret"],
+        'auth_token': historybody["profile"]["auth_token"],
+      } // Stokes and Sons
     }).then((value) {
       savePath.add(value.path);
       authToken.add(auth_token);
@@ -38,19 +52,40 @@ class Savemodel extends ChangeNotifier {
     }).catchError((error) => print("Failed to add user: $error"));
   }
 
-  void addPath(String email) async {
+  Future<void> addPath(String email) async {
     var snap = await _users.limit(1).where('mail', isEqualTo: email).get();
     var data = snap.docs[0].id;
     var doc = snap.docs[0].data() as Map<String, dynamic>;
+    print("history");
+    print(history);
+
+    history = {
+      "auth_token": doc["history"]["auth_token"],
+      "auth_secret": doc["history"]["auth_secret"]
+    };
+    print("history");
+    print(history);
+    print("userHistory");
+    print(userHistory);
+    print(List.from(doc["history_list"]));
+
     authToken.add(doc["auth_token"]);
     authSecret.add(doc["auth_secret"]);
     likes = List.from(doc["likes"]);
     focus = List.from(doc["focus"]);
+    userHistory = List.from(doc["history_list"]);
     savePath.add(data);
+
+    return;
   }
 
   void clearSavePath() {
     savePath.clear();
+    history.clear();
+    likes.clear();
+    focus.clear();
+    authSecret.clear();
+    authToken.clear();
   }
 
   void addLike(String item) async {
@@ -58,12 +93,17 @@ class Savemodel extends ChangeNotifier {
       var user = await _users.doc(savePath.last).get();
       var data = user.data() as Map<String, dynamic>;
       likes = List.from(data["likes"]);
-
-      if (data["likes"].contains(item)) {
-        removeLike(item);
+      print("saving ...");
+      print(data);
+      print(data["likes"]);
+      print(item);
+      if (likes.contains(item)) {
+        data["likes"].remove(item);
+        likes.remove(item);
         RestClient().removeFavoriteToProfile(
             data["auth_token"], data["auth_secret"], item);
       } else {
+        likes.remove(item);
         likes.add(item);
         RestClient().addFavoriteToProfile(
           data["auth_token"],
@@ -71,10 +111,28 @@ class Savemodel extends ChangeNotifier {
           item,
         );
       }
+      print({...data, "likes": likes}["likes"]);
+      notifyListeners();
+
+      _users.doc(savePath.last).update({...data, "likes": likes});
+    }
+  }
+
+  void addHistory(String item) async {
+    if (savePath.length > 0) {
+      var user = await _users.doc(savePath.last).get();
+      var data = user.data() as Map<String, dynamic>;
+
+      if (userHistory.contains(item)) {
+        userHistory.remove(item);
+        userHistory.add(item);
+      } else {
+        userHistory.add(item);
+      }
 
       notifyListeners();
-      data["likes"] = likes;
-      _users.doc(savePath.last).update(data);
+      data["history_list"] = userHistory;
+      _users.doc(savePath.last).update({...data, "history_list": userHistory});
     }
   }
 

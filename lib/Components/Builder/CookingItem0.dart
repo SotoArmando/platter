@@ -1,31 +1,56 @@
 import 'dart:math';
 
 import 'package:cancellation_token_http/http.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:p_l_atter/Components/Gradienttextspace.dart';
 import 'package:p_l_atter/Components/Textspace.dart';
+import 'package:p_l_atter/GraphQl/Changenotifiers/Loaduntil.dart';
 import 'package:p_l_atter/GraphQl/Changenotifiers/Recipeid.dart';
 import 'package:p_l_atter/GraphQl/Changenotifiers/Requestor.dart';
+import 'package:p_l_atter/GraphQl/Changenotifiers/Savemodel.dart';
 import 'package:p_l_atter/GraphQl/Restclient.dart';
 import 'package:p_l_atter/Resources/localconfig/platterfont.dart';
+
+import 'package:p_l_atter/main.dart';
 import 'package:provider/provider.dart';
 
-class Cookingitem0 extends StatelessWidget {
-  final data;
-  const Cookingitem0({Key? key, dynamic this.data}) : super(key: key);
+class Cookingitem0 extends StatefulWidget {
+  final dynamic data;
+  const Cookingitem0({Key? key, required this.data}) : super(key: key);
+
+  @override
+  _Cookingitem0State createState() => _Cookingitem0State();
+}
+
+class _Cookingitem0State extends State<Cookingitem0> {
+  String id = "";
+  String name = "";
+  String thumbnail_url =
+      "https://static.vecteezy.com/system/resources/previews/004/141/669/original/no-photo-or-blank-image-icon-loading-images-or-missing-image-mark-image-not-available-or-image-coming-soon-sign-simple-nature-silhouette-in-frame-isolated-illustration-vector.jpg";
+
+  Requestor? providedRequestor;
+  Savemodel? saveModel;
+  Loaduntil? providedLoaduntil;
+  Recipeid? providedRecipeId;
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    id = widget.data?["recipe_id"] ?? "Empty";
+    name = widget.data?["recipe_name"] ?? "Empty";
+    thumbnail_url = widget.data?["recipe_image"] ??
+        "https://static.vecteezy.com/system/resources/previews/004/141/669/original/no-photo-or-blank-image-icon-loading-images-or-missing-image-mark-image-not-available-or-image-coming-soon-sign-simple-nature-silhouette-in-frame-isolated-illustration-vector.jpg";
+
+    providedRequestor = Provider.of<Requestor>(context, listen: false);
+    saveModel = Provider.of<Savemodel>(context, listen: false);
+    providedLoaduntil = Provider.of<Loaduntil>(context, listen: false);
+    providedRecipeId = Provider.of<Recipeid>(context, listen: false);
+  }
 
   @override
   Widget build(BuildContext context) {
-    final String id = data?["recipe_id"] ?? "Empty";
-    final String name = data?["recipe_name"] ?? "Empty";
-
-    final String description = data?["recipe_description"] ?? "Empty";
-    final String thumbnail_url = data?["recipe_image"] ??
-        "https://static.vecteezy.com/system/resources/previews/004/141/669/original/no-photo-or-blank-image-icon-loading-images-or-missing-image-mark-image-not-available-or-image-coming-soon-sign-simple-nature-silhouette-in-frame-isolated-illustration-vector.jpg";
-
-    var providedRequestor = Provider.of<Requestor>(context);
     return Row(
         // crossAxisAlignment: CrossAxisAlignment.center,
         // mainAxisAlignment: MainAxisAlignment.center,
@@ -36,11 +61,25 @@ class Cookingitem0 extends StatelessWidget {
 
           InkWell(
             onTap: () {
-              Provider.of<Recipeid>(context, listen: false).update(id);
-              providedRequestor.addRequest("recipe_id $id",
+              Navigator.pushNamed(context, '/details');
+              providedRecipeId?.update(id);
+              providedRequestor?.addRequest("recipe_id $id",
                   (CancellationToken token) => RestClient().recipesDetail(id),
                   now: true);
-              Navigator.pushNamed(context, '/details');
+
+              Future(() async {
+                await Future<void>.delayed(const Duration(seconds: 3));
+                providedRequestor?.addRequest(
+                    "addhistory${DateTime.now().millisecondsSinceEpoch}",
+                    (CancellationToken token) =>
+                        RestClient().addFavoriteToProfile(
+                          saveModel?.history["auth_token"]! ?? "",
+                          saveModel?.history["auth_secret"]! ?? "",
+                          id,
+                        ),
+                    now: true);
+                saveModel?.addHistory(id);
+              });
             },
             child: Container(
               // color: Colors.red[300],
@@ -64,7 +103,7 @@ class Cookingitem0 extends StatelessWidget {
                       child: Stack(
                         children: [
                           GradientTextspace(
-                            gradient: LinearGradient(
+                            gradient: const LinearGradient(
                                 begin: Alignment.bottomCenter,
                                 end: Alignment.topCenter,
                                 colors: [
@@ -81,7 +120,7 @@ class Cookingitem0 extends StatelessWidget {
                                   fontWeight: FontWeight.w400,
                                   height: 1.183898974,
                                   fontSize: fontSizeNumber(0),
-                                  color: Color(0xFF000000)),
+                                  color: const Color(0xFF000000)),
                             ),
                           ),
                         ],
@@ -104,9 +143,9 @@ class Cookingitem0 extends StatelessWidget {
                                   begin: Alignment.bottomCenter,
                                   end: Alignment.topCenter,
                                   colors: [
-                                    Color.fromARGB(255, 2, 6, 8)
+                                    const Color.fromARGB(255, 2, 6, 8)
                                         .withOpacity(0.01),
-                                    Color.fromARGB(255, 2, 14, 31)
+                                    const Color.fromARGB(255, 2, 14, 31)
                                         .withOpacity(0.01),
                                   ]),
                             )),

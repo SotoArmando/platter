@@ -42,65 +42,20 @@ class FirstScreen extends StatefulWidget {
   State<FirstScreen> createState() => _FirstScreenState();
 }
 
-class _FirstScreenState extends State<FirstScreen>
-    with SingleTickerProviderStateMixin {
-  bool _visible = true;
-  late final AnimationController _controller;
-
+class _FirstScreenState extends State<FirstScreen> {
   @override
   void initState() {
     super.initState();
-    _controller = AnimationController(
-      vsync: this,
-      duration: Duration(milliseconds: 400),
-    );
   }
 
   @override
   Widget build(BuildContext context) {
     const background = Image(
-        fit: BoxFit.fitWidth,
+        fit: BoxFit.cover,
         height: double.infinity,
         width: double.infinity,
         alignment: Alignment.center,
         image: AssetImage('assets/platter/welcomeback.png'));
-
-    var welcome = SingleChildScrollView(
-      child: Column(children: [
-        Row(
-          mainAxisAlignment: MainAxisAlignment.start,
-          children: [
-            Material(
-              color: Colors.transparent,
-              child: InkWell(
-                onTap: () {},
-                child: Padding(
-                    padding: EdgeInsets.all(24),
-                    child: Directionality(
-                      textDirection: TextDirection.ltr,
-                      child: SvgPicture.asset(
-                        "assets/platter/globe.svg",
-                        height: 23.06125,
-                        color: Color.fromARGB(255, 255, 255, 255),
-                        matchTextDirection: true,
-                      ),
-                    )),
-              ),
-            )
-          ],
-        ),
-        Center(
-          child: ElevatedButton(
-            // Within the `FirstScreen` widget
-            onPressed: () {
-              // Navigate to the second screen using a named route.
-              Navigator.pushNamed(context, '/second');
-            },
-            child: const Text('Launch screen'),
-          ),
-        ),
-      ]),
-    );
 
     return Scaffold(
         body: Stack(
@@ -112,95 +67,186 @@ class _FirstScreenState extends State<FirstScreen>
           left: 0,
           right: 0,
           child: Container(
-            height: PixelNumberfromFigma(209),
+            height: pixelNumberfromFigma(209),
             child: const rive.RiveAnimation.asset('assets/platter/greatani.riv',
-                fit: BoxFit.fitWidth),
+                fit: BoxFit.cover),
           ),
         ),
         Positioned(
-            bottom: PixelNumberfromFigma(69),
+            bottom: pixelNumberfromFigma(69 - 50),
             left: 0,
             right: 0,
-            child: Container(
-                alignment: Alignment.center,
-                child: ElevatedButton(
-                  onPressed: () {
-                    Navigator.pushNamed(context, '/welcome_signin');
-                  },
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: Colors.white,
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(12), // <-- Radius
-                    ),
-                  ),
-                  child: Container(
-                    height: PixelNumberfromFigma(43),
-                    width: PixelNumberfromFigma(142),
-                    decoration: BoxDecoration(
-                        color: Colors.transparent,
-                        borderRadius:
-                            BorderRadius.circular(PixelNumberfromFigma(10.98))),
+            child: Column(
+              children: [
+                Container(
                     alignment: Alignment.center,
-                    child: Textspace(
-                      text: "Get Started",
-                      size: 1,
-                      alignment: Alignment.center,
-                      headsize: 0.00001,
-                      style: GoogleFonts.inter(
-                          fontWeight: FontWeight.w500, color: Colors.black),
-                    ),
-                  ),
-                ))),
+                    child: ElevatedButton(
+                      onPressed: () {
+                        Navigator.pushNamed(context, '/welcome_signup');
+                      },
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: const Color(0xFF08A3FC),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(12), // <-- Radius
+                        ),
+                      ),
+                      child: Container(
+                        height: pixelNumberfromFigma(43),
+                        width: pixelNumberfromFigma(142),
+                        decoration: BoxDecoration(
+                            color: Colors.transparent,
+                            borderRadius: BorderRadius.circular(
+                                pixelNumberfromFigma(10.98))),
+                        alignment: Alignment.center,
+                        child: GradientTextspace(
+                          gradient: const LinearGradient(
+                              begin: Alignment.bottomCenter,
+                              end: Alignment.topCenter,
+                              colors: [
+                                Color.fromARGB(255, 246, 252, 255),
+                                Color.fromARGB(255, 227, 239, 255),
+                              ]),
+                          textspace: Textspace(
+                            text: "Sign up",
+                            size: 1,
+                            alignment: Alignment.center,
+                            headsize: 0.00001,
+                            style: GoogleFonts.inter(
+                                fontWeight: FontWeight.w700,
+                                color: Colors.white),
+                          ),
+                        ),
+                      ),
+                    )),
+                SizedBox(height: pixelNumberfromFigma(15)),
+                Container(
+                    alignment: Alignment.center,
+                    child: ElevatedButton(
+                      onPressed: () {
+                        Navigator.pushNamed(context, '/welcome_signin');
+                      },
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: Colors.white,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(12), // <-- Radius
+                        ),
+                      ),
+                      child: Container(
+                        height: pixelNumberfromFigma(43),
+                        width: pixelNumberfromFigma(142),
+                        decoration: BoxDecoration(
+                            color: Colors.transparent,
+                            borderRadius: BorderRadius.circular(
+                                pixelNumberfromFigma(10.98))),
+                        alignment: Alignment.center,
+                        child: GradientTextspace(
+                          gradient: const LinearGradient(
+                              begin: Alignment.bottomCenter,
+                              end: Alignment.topCenter,
+                              colors: [
+                                Color.fromARGB(255, 2, 6, 8),
+                                Color.fromARGB(255, 2, 14, 31),
+                              ]),
+                          textspace: Textspace(
+                            text: "Sign in",
+                            size: 1,
+                            alignment: Alignment.center,
+                            headsize: 0.00001,
+                            style: GoogleFonts.inter(
+                                fontWeight: FontWeight.w500,
+                                color: Colors.black),
+                          ),
+                        ),
+                      ),
+                    ))
+              ],
+            )),
         Positioned(
-            bottom: PixelNumberfromFigma(69 + 43 + 34),
+            bottom: pixelNumberfromFigma(69 + 43 + 34),
             left: 0,
             right: 0,
             child: Container(
                 alignment: Alignment.center,
                 child: Image.asset(
                   "assets/platter/307.png",
-                  height: PixelNumberfromFigma(43),
+                  height: pixelNumberfromFigma(43),
                 ))),
         Positioned(
-          left: PixelNumberfromFigma(15),
-          right: PixelNumberfromFigma(0),
-          bottom: PixelNumberfromFigma(263),
-          child:
-              Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
-            RichText(
-              textHeightBehavior:
-                  const TextHeightBehavior(applyHeightToFirstAscent: false),
-              text: TextSpan(
-                // Note: Styles for TextSpans must be explicitly defined.
-                // Child text spans will inherit styles from parent
-                style: GoogleFonts.inter(
-                    color: Colors.white,
-                    fontSize: fontSizeNumber(3.0000001),
-                    fontWeight: FontWeight.w600,
-                    height: 1.365853659),
-                children: <TextSpan>[
-                  TextSpan(
-                      text: 'With a\n',
-                      style: GoogleFonts.inter(
-                          color: Colors.white,
-                          fontSize: fontSizeNumber(3.0000001),
-                          fontWeight: FontWeight.w700)),
-                  TextSpan(text: 'Great Cooking App\n'),
-                  TextSpan(
-                      text: 'Comes\n',
-                      style: GoogleFonts.inter(
-                          color: Colors.white,
-                          fontSize: fontSizeNumber(3.0000001),
-                          fontWeight: FontWeight.w700)),
-                  TextSpan(text: 'Great Cooker'),
-                ],
+            right: pixelNumberfromFigma(15),
+            bottom: pixelNumberfromFigma(263),
+            child: GradientTextspace(
+              gradient: const LinearGradient(
+                  begin: Alignment.topCenter,
+                  end: Alignment.bottomCenter,
+                  stops: const [
+                    0,
+                    .10,
+                    .90,
+                    1
+                  ],
+                  colors: [
+                    Color.fromARGB(255, 255, 232, 246),
+                    const Color.fromARGB(255, 255, 255, 255),
+                    const Color.fromARGB(255, 255, 255, 255),
+                    Color.fromARGB(255, 255, 240, 249),
+                  ]),
+              textspace: SvgPicture.asset(
+                "assets/platter/timer.svg",
+                width: pixelNumberfromFigma(90.31),
+                color: Colors.black,
               ),
-            ),
-            SvgPicture.asset(
-              "assets/platter/timer.svg",
-              width: PixelNumberfromFigma(90.31 * 1.2720196495141103),
-              color: Colors.white,
-            ),
+            )),
+        Positioned(
+          left: pixelNumberfromFigma(15),
+          right: pixelNumberfromFigma(0),
+          bottom: pixelNumberfromFigma(263),
+          child: Row(mainAxisAlignment: MainAxisAlignment.start, children: [
+            GradientTextspace(
+              gradient: const LinearGradient(
+                  begin: Alignment.topCenter,
+                  end: Alignment.bottomCenter,
+                  stops: [
+                    0,
+                    .50,
+                    .75,
+                    1
+                  ],
+                  colors: [
+                    Color.fromARGB(255, 243, 250, 252),
+                    Color.fromARGB(255, 255, 249, 252),
+                    Color.fromARGB(255, 243, 250, 252),
+                    Color.fromARGB(255, 255, 249, 252),
+                  ]),
+              textspace: RichText(
+                textHeightBehavior:
+                    const TextHeightBehavior(applyHeightToFirstAscent: false),
+                text: TextSpan(
+                  // Note: Styles for TextSpans must be explicitly defined.
+                  // Child text spans will inherit styles from parent
+                  style: GoogleFonts.inter(
+                      color: Colors.white,
+                      fontSize: fontSizeNumber(3.0000001),
+                      fontWeight: FontWeight.w700,
+                      height: 1.365853659),
+                  children: <TextSpan>[
+                    TextSpan(
+                        text: 'With a\n',
+                        style: GoogleFonts.inter(
+                            color: Colors.white,
+                            fontSize: fontSizeNumber(3.0000001),
+                            fontWeight: FontWeight.w800)),
+                    const TextSpan(text: 'Great Cooking App\n'),
+                    TextSpan(
+                        text: 'Comes\n',
+                        style: GoogleFonts.inter(
+                            color: Colors.white,
+                            fontSize: fontSizeNumber(3.0000001),
+                            fontWeight: FontWeight.w800)),
+                    const TextSpan(text: 'Great Cooker'),
+                  ],
+                ),
+              ),
+            )
           ]),
         ),
         // Positioned(
@@ -211,35 +257,51 @@ class _FirstScreenState extends State<FirstScreen>
         // ),
 
         Positioned(
-            top: PixelNumberfromFigma(24),
-            right: PixelNumberfromFigma(7.5),
+            top: pixelNumberfromFigma(24),
+            right: pixelNumberfromFigma(7.5),
             child: InkWell(
-                child: Image.asset(
-                  "assets/platter/powered_by_fatsecret.png",
-                  width: PixelNumberfromFigma(100),
+                child: const Text(
+                  "Powered by FatSecret",
+                  style: TextStyle(color: Colors.black),
                 ),
                 onTap: () async {
                   if (await canLaunchUrl(
-                      Uri.parse("https://platform.fatsecret.com")))
+                      Uri.parse("https://platform.fatsecret.com"))) {
                     await launchUrl(Uri.parse("https://platform.fatsecret.com"),
                         mode: LaunchMode.externalApplication);
-                  else
-                    // can't launch url, there is some error
+                  } else {
                     throw "Could not launch https: //platform.fatsecret.com";
+                  }
                 })),
         Positioned(
-          top: PixelNumberfromFigma(61),
-          left: 0,
-          right: 0,
-          child: Textspace(
-            text: "Platter",
-            alignment: Alignment.center,
-            style: GoogleFonts.inter(
-                fontSize: fontSizeNumber(3.0000001) * 1.366829268,
-                fontWeight: FontWeight.w800,
-                color: Colors.white),
-          ),
-        ),
+            top: pixelNumberfromFigma(61),
+            left: 0,
+            right: 0,
+            child: GradientTextspace(
+              gradient: const LinearGradient(
+                  begin: Alignment.topCenter,
+                  end: Alignment.bottomCenter,
+                  stops: const [
+                    0,
+                    .10,
+                    .90,
+                    1
+                  ],
+                  colors: [
+                    Color.fromARGB(255, 255, 232, 246),
+                    const Color.fromARGB(255, 255, 255, 255),
+                    const Color.fromARGB(255, 255, 255, 255),
+                    Color.fromARGB(255, 255, 240, 249),
+                  ]),
+              textspace: Textspace(
+                text: "Platter",
+                alignment: Alignment.center,
+                style: GoogleFonts.inter(
+                    fontSize: fontSizeNumber(3.0000001) * 1.366829268,
+                    fontWeight: FontWeight.w800,
+                    color: Colors.white),
+              ),
+            )),
         Positioned.fill(
             child: IgnorePointer(
           child: DecoratedBox(
@@ -247,17 +309,17 @@ class _FirstScreenState extends State<FirstScreen>
               gradient: LinearGradient(
                   begin: Alignment.bottomCenter,
                   end: Alignment.topCenter,
-                  stops: [
+                  stops: const [
                     0,
                     .10,
                     .90,
                     1
                   ],
                   colors: [
-                    Color.fromARGB(255, 255, 0, 150).withOpacity(0.005),
-                    Color.fromARGB(255, 255, 255, 255).withOpacity(0.005),
-                    Color.fromARGB(255, 255, 255, 255).withOpacity(0.005),
-                    Color.fromARGB(255, 255, 0, 150).withOpacity(0.005),
+                    const Color.fromARGB(255, 255, 0, 150).withOpacity(0.005),
+                    const Color.fromARGB(255, 255, 255, 255).withOpacity(0.005),
+                    const Color.fromARGB(255, 255, 255, 255).withOpacity(0.005),
+                    const Color.fromARGB(255, 255, 0, 150).withOpacity(0.005),
                   ]),
             ),
           ),

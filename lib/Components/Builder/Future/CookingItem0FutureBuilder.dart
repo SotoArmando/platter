@@ -18,7 +18,8 @@ Future<http.Response> ass() async {
 class CookingItem0FutureBuilder extends StatefulWidget {
   final Function readJson;
 
-  CookingItem0FutureBuilder({Key? key, this.readJson = ass}) : super(key: key);
+  const CookingItem0FutureBuilder({Key? key, this.readJson = ass})
+      : super(key: key);
 
   @override
   _CookingItem0FutureBuilderState createState() =>
@@ -29,27 +30,33 @@ class _CookingItem0FutureBuilderState extends State<CookingItem0FutureBuilder> {
   Future<http.Response>? loadFuture;
 
   @override
-  void initState() {}
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    loadFuture = widget.readJson();
+  }
 
   @override
   Widget build(BuildContext context) {
     return Stack(
       children: [
         FutureBuilder<http.Response>(
-          future: widget.readJson(),
+          future: loadFuture,
           builder: (context, responseSnapshot) {
-            dynamic data = [];
-            try {
-              data = jsonDecode(responseSnapshot.data?.body ?? "{}")["recipes"]
-                  ["recipe"];
-            } catch (e) {}
-
             List<Widget> children;
-
             if (responseSnapshot.connectionState == ConnectionState.done ||
                 (responseSnapshot.hasData &&
                     "${jsonDecode(responseSnapshot.data!.body)["error"]}" ==
                         "null")) {
+              dynamic data = [];
+              try {
+                data =
+                    jsonDecode(responseSnapshot.data!.body ?? "{}")["recipes"]
+                        ["recipe"];
+              } catch (e) {
+                //
+              }
+
               children = [
                 Container(
                   // color: Colors.red[300],
@@ -72,7 +79,7 @@ class _CookingItem0FutureBuilderState extends State<CookingItem0FutureBuilder> {
             } else {
               children = [
                 Column(
-                  children: [
+                  children: const [
                     SizedBox(
                       width: 60,
                       height: 60,
@@ -96,12 +103,12 @@ class _CookingItem0FutureBuilderState extends State<CookingItem0FutureBuilder> {
                   ? Column(
                       children: children,
                     )
-                  : Padding(
+                  : const Padding(
                       padding: EdgeInsets.only(top: 15),
                       child: CircularProgressIndicator(),
                     );
             } catch (e) {
-              return Padding(
+              return const Padding(
                 padding: EdgeInsets.only(top: 15),
                 child: CircularProgressIndicator(),
               );
@@ -115,17 +122,17 @@ class _CookingItem0FutureBuilderState extends State<CookingItem0FutureBuilder> {
               gradient: LinearGradient(
                   begin: Alignment.centerLeft,
                   end: Alignment.centerRight,
-                  stops: [
+                  stops: const [
                     0,
                     .10,
                     .90,
                     1
                   ],
                   colors: [
-                    Color.fromARGB(255, 255, 0, 150).withOpacity(0.005),
-                    Color.fromARGB(255, 255, 255, 255).withOpacity(0.000),
-                    Color.fromARGB(255, 255, 255, 255).withOpacity(0.000),
-                    Color.fromARGB(255, 255, 0, 150).withOpacity(0.005),
+                    const Color.fromARGB(255, 255, 0, 150).withOpacity(0.005),
+                    const Color.fromARGB(255, 255, 255, 255).withOpacity(0.000),
+                    const Color.fromARGB(255, 255, 255, 255).withOpacity(0.000),
+                    const Color.fromARGB(255, 255, 0, 150).withOpacity(0.005),
                     // Color.fromARGB(255, 162, 0, 255).withOpacity(0.005),
                     // Color.fromARGB(255, 255, 255, 255).withOpacity(0),
                     // Color.fromARGB(255, 255, 255, 255).withOpacity(0),

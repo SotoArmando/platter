@@ -1,4 +1,4 @@
-package com.example.p_l_atter
+package com.sotoarmando.p_l_atter
 
 // TODO: Implement ListTileNativeAdFactory class
 
@@ -7,6 +7,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
+import com.sotoarmando.p_l_atter.R
 import com.google.android.gms.ads.nativead.NativeAd
 import com.google.android.gms.ads.nativead.NativeAdView
 import io.flutter.plugins.googlemobileads.GoogleMobileAdsPlugin

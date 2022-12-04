@@ -1,4 +1,4 @@
-package com.example.p_l_atter
+package com.sotoarmando.p_l_atter
 
 import androidx.annotation.NonNull
 import io.flutter.embedding.android.FlutterActivity

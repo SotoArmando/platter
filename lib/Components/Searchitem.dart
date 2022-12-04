@@ -74,7 +74,7 @@ class _SearchitemState extends State<Searchitem> {
               Container(
                 color: Colors.white70.withOpacity(0.01),
                 margin: EdgeInsets.only(
-                  bottom: PixelNumberfromFigma(25),
+                  bottom: pixelNumberfromFigma(25),
                 ),
               ),
               Positioned(
@@ -101,8 +101,8 @@ class _SearchitemState extends State<Searchitem> {
                                     // height: PixelNumberfromFigma(25),
                                     alignment: Alignment.topCenter,
                                     padding: EdgeInsets.only(
-                                        top: PixelNumberfromFigma(7.4),
-                                        left: PixelNumberfromFigma(8)),
+                                        top: pixelNumberfromFigma(7.4),
+                                        left: pixelNumberfromFigma(8)),
                                     child: Stack(children: [
                                       GradientTextspace(
                                           gradient: LinearGradient(
@@ -134,7 +134,7 @@ class _SearchitemState extends State<Searchitem> {
                                             foreground: Paint()
                                               ..style = PaintingStyle.stroke
                                               ..strokeWidth =
-                                                  PixelNumberfromFigma(0.2)
+                                                  pixelNumberfromFigma(0.2)
                                               ..color = Color(0xff000000),
                                           )),
                                     ]),

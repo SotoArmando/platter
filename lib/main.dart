@@ -1,12 +1,16 @@
+import 'dart:async';
+
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:p_l_atter/Components/CookingAssistance.dart';
 import 'package:p_l_atter/Components/CookingDetails.dart';
 import 'package:p_l_atter/Components/Gradienttextspace.dart';
+import 'package:p_l_atter/Components/Loadingscreen.dart';
+import 'package:p_l_atter/Components/aboutus.dart';
 import 'package:p_l_atter/Components/appdrawer.dart';
+import 'package:p_l_atter/GraphQl/Changenotifiers/Loaduntil.dart';
 import 'package:p_l_atter/GraphQl/Changenotifiers/Preferencesmodel.dart';
 import 'package:p_l_atter/GraphQl/Changenotifiers/Recipeid.dart';
 import 'package:p_l_atter/GraphQl/Changenotifiers/Savemodel.dart';
@@ -15,31 +19,64 @@ import 'package:p_l_atter/GraphQl/Changenotifiers/Requestor.dart';
 import 'package:p_l_atter/GraphQl/Restclient.dart';
 import 'package:p_l_atter/Resources/ad_helper.dart';
 import 'package:p_l_atter/Resources/localconfig/platterfont.dart';
-import 'package:p_l_atter/Resources/navigatorextension.dart';
-import 'package:p_l_atter/Routes/animatedcontainertest.dart';
+
+import 'package:p_l_atter/Routes/blog.dart';
 import 'package:p_l_atter/Routes/categoryscreen.dart';
 import 'package:p_l_atter/Routes/home.dart';
-import 'package:p_l_atter/Routes/ratiotest.dart';
+import 'package:p_l_atter/Routes/rivetest.dart';
 import 'package:p_l_atter/Routes/search.dart';
-import 'package:p_l_atter/Routes/session.dart';
 import 'package:p_l_atter/Routes/welcome.dart';
 import 'package:p_l_atter/Routes/welcomesignin.dart';
 import 'package:p_l_atter/Routes/welcomesignup.dart';
 import 'package:p_l_atter/firebase_options.dart';
 import 'package:provider/provider.dart';
 import 'package:cancellation_token_http/http.dart' as http;
-import 'package:workmanager/workmanager.dart';
+import 'firebase_options.dart';
 
 final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
-final requestor = Requestor();
+final GlobalKey<ScaffoldState> scaffoldKey = new GlobalKey<ScaffoldState>();
 
-void main() {
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
+
+  var providedRequestor = Requestor();
+  var providedSavemodel = Savemodel();
+  var loaduntil = Loaduntil();
+
+  providedRequestor.addRequest(
+      "home0",
+      (http.CancellationToken token) => RestClient().recipesSearch("",
+          recipe_type: "Breakfast", page_number: 5, canceltoken: token));
+  providedRequestor.addRequest(
+      "home1",
+      (http.CancellationToken token) => RestClient().recipesSearch("",
+          recipe_type: "Breakfast", page_number: 4, canceltoken: token));
+  providedRequestor.addRequest(
+      "home2",
+      (http.CancellationToken token) => RestClient().recipesSearch("Sweet",
+          recipe_type: "Breakfast", canceltoken: token));
+  providedRequestor.addRequest(
+      "home3",
+      (http.CancellationToken token) =>
+          RestClient().recipesSearch("", page_number: 4, canceltoken: token));
+
+  loaduntil.loaduntil(() => Future.wait([
+        providedRequestor.waitRequest("home0"),
+        providedRequestor.waitRequest("home1"),
+        providedRequestor.waitRequest("home2"),
+        providedRequestor.waitRequest("home3"),
+      ]));
+
   runApp(MultiProvider(providers: [
     ChangeNotifierProvider(create: (context) => Recipeid()),
-    ChangeNotifierProvider(create: (context) => Savemodel()),
+    ChangeNotifierProvider(create: (context) => providedRequestor),
     ChangeNotifierProvider(create: (context) => Preferencesmodel()),
     ChangeNotifierProvider(create: (context) => UserIsOn()),
-    ChangeNotifierProvider(create: (context) => requestor),
+    ChangeNotifierProvider(create: (context) => providedSavemodel),
+    ChangeNotifierProvider(create: (context) => loaduntil),
   ], child: App()));
 }
 
@@ -52,50 +89,30 @@ class App extends StatefulWidget {
 
 class _AppState extends State<App> {
   num currentPage = 0;
+  String popableroutename = "";
   List<String> _currentRoute = ["/welcome"];
 
   String get currentRoute => _currentRoute.last;
 
   bool init = false;
 
-  final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
-
   void initRequest(BuildContext context) {
     if (init == false) {
-      var providedRequestor = Provider.of<Requestor>(context);
-
-      var requestorRequests = {
-        "home0": providedRequestor.addRequest(
-            "home0",
-            (http.CancellationToken token) => RestClient().recipesSearch("",
-                recipe_type: "Breakfast", page_number: 5, canceltoken: token)),
-        "home1": providedRequestor.addRequest(
-            "home1",
-            (http.CancellationToken token) => RestClient().recipesSearch("",
-                recipe_type: "Breakfast", page_number: 4, canceltoken: token)),
-        "home2": providedRequestor.addRequest(
-            "home2",
-            (http.CancellationToken token) => RestClient().recipesSearch(
-                "Sweet",
-                recipe_type: "Breakfast",
-                canceltoken: token)),
-        "home3": providedRequestor.addRequest(
-            "home3",
-            (http.CancellationToken token) => RestClient()
-                .recipesSearch("", page_number: 4, canceltoken: token)),
-      };
-
       init = true;
     }
+  }
+
+  void pushNameonApp(String name) {
+    setState(() {
+      _currentRoute.add(name);
+    });
   }
 
   @override
   void initState() {
     super.initState();
-    Firebase.initializeApp(
-      options: DefaultFirebaseOptions.currentPlatform,
-    );
 
+    // _initGoogleMobileAds();
     // SystemChrome.setSystemUIOverlayStyle(
     //   SystemUiOverlayStyle(
     //     statusBarColor:
@@ -115,38 +132,46 @@ class _AppState extends State<App> {
     return MobileAds.instance.initialize();
   }
 
-  // int returnCurrentActiveIcon() {
-  //   var response = [0, 1, 2];
-
-  //   var myarray = [
-  //     _currentRoute.lastIndexOf("/second"),
-  //     _currentRoute.lastIndexOf("/search"),
-  //     _currentRoute.lastIndexOf("/assistance")
-  //   ];
-
-  //   myarray.sort();
-
-  //   return response[[
-  //     _currentRoute.lastIndexOf("/second"),
-  //     _currentRoute.lastIndexOf("/search"),
-  //     _currentRoute.lastIndexOf("/assistance")
-  //   ].indexOf(myarray.last)];
-  // }
+  int returnCurrentActiveIcon() {
+    var i = [
+      _currentRoute.lastIndexOf("/second"),
+      _currentRoute.lastIndexOf("/search"),
+      _currentRoute.lastIndexOf("/assistance")
+    ];
+    i.sort();
+    Map<String, int> b = {
+      "/second": 0,
+      "/search": 1,
+      "/assistance": 2,
+    };
+    var last = i.last == -1 ? 0 : i.last;
+    // print("returnCurrentActiveIcon!");
+    // print(_currentRoute);
+    // print(i);
+    // print(last);
+    // print(b[_currentRoute[last]]);
+    return (b[last == 0 ? "/second" : _currentRoute[last]] ?? 0) + 1;
+  }
 
   Future<bool> _onWillPop() async {
     if (currentRoute.contains("second")) {
       return false;
     } else {
+      // print("popping!");
+      // print(currentRoute);
+      // print(popableroutename);
       _currentRoute.removeLast();
+      setState(() {});
       return true;
     }
+
     //<-- SEE HERE
   }
 
   Route _createRoute(Widget page) {
     return PageRouteBuilder(
-        transitionDuration: Duration(milliseconds: 150),
-        reverseTransitionDuration: Duration(milliseconds: 150),
+        transitionDuration: const Duration(milliseconds: 150),
+        reverseTransitionDuration: const Duration(milliseconds: 150),
         pageBuilder: (context, animation, secondaryAnimation) => page,
         transitionsBuilder: (context, animation, secondaryAnimation, child) {
           const begin = Offset(0.0, 1.0);
@@ -171,6 +196,8 @@ class _AppState extends State<App> {
     if (init == false) {
       initRequest(context);
     }
+
+    final toggler = Provider.of<UserIsOn>(context, listen: false);
     return MaterialApp(
       title: 'Plater Kitchen Learning Enterprise',
       // Start the app with the "/" named route. In this case, the app starts
@@ -186,64 +213,159 @@ class _AppState extends State<App> {
           '/welcome_signup': Welcomesignup(),
           // When navigating to the "/second" route, build the SecondScreen widget.
           '/second': Home(),
-          '/details': CookingDetails(),
+          '/details': const CookingDetails(),
           '/assistance': Cookingassistance(),
           '/search': Searchscreen(),
           '/category': Categoryscreen(),
+          '/blog': Blog(),
+          '/about': Aboutus(),
+          '/test': const Rivetest(),
           // '/second': (context) => Home(),
         };
-        _currentRoute.add(settings.name!);
-
+        popableroutename = settings.name!;
+        if (currentRoute != settings.name!) {
+          _currentRoute.add(settings.name!);
+        }
         if (currentRoute.contains("welcome")) {
-          Provider.of<UserIsOn>(context, listen: false).update(false);
+          (() async {
+            await Future<void>.delayed(const Duration(seconds: 1));
+            toggler.update(false);
+          })();
         } else {
-          Provider.of<UserIsOn>(context, listen: false).update(true);
+          (() async {
+            await Future<void>.delayed(const Duration(seconds: 1));
+            toggler.update(true);
+          })();
         }
 
         return _createRoute(WillPopScope(
-          child: appsettings[settings.name] ?? const FirstScreen(),
           onWillPop: _onWillPop,
+          child: appsettings[settings.name] ?? const FirstScreen(),
         ));
       },
       builder: ((context, child) => Scaffold(
             drawer: Drawer(child: Appdrawer()),
-            body: child,
-            key: _scaffoldKey,
+            body: Stack(
+              fit: StackFit.expand,
+              children: [child!, const Loadingscreen()],
+            ),
+            key: scaffoldKey,
             appBar: PreferredSize(
               preferredSize: Size.fromHeight(fontSizeNumber(0) * 3.022099448),
               child: Consumer<UserIsOn>(
                 builder: (context, userison, child) =>
-                    userison.isON ? child! : SizedBox(),
-                child: Mainappbar(
-                  scaffoldkey: _scaffoldKey,
-                ),
+                    userison.isON ? child! : const SizedBox(),
+                child: Stack(children: [
+                  const Mainappbar(),
+                  Positioned.fill(
+                      child: IgnorePointer(
+                    child: Container(
+                      decoration: BoxDecoration(
+                        gradient: LinearGradient(
+                            begin: Alignment.centerLeft,
+                            end: Alignment.centerRight,
+                            stops: const [
+                              0,
+                              .10,
+                              .90,
+                              1
+                            ],
+                            colors: [
+                              const Color.fromARGB(255, 255, 0, 150)
+                                  .withOpacity(0.005),
+                              const Color.fromARGB(255, 255, 255, 255)
+                                  .withOpacity(0.000),
+                              const Color.fromARGB(255, 255, 255, 255)
+                                  .withOpacity(0.000),
+                              const Color.fromARGB(255, 255, 0, 150)
+                                  .withOpacity(0.005),
+                              // Color.fromARGB(255, 162, 0, 255).withOpacity(0.005),
+                              // Color.fromARGB(255, 255, 255, 255).withOpacity(0),
+                              // Color.fromARGB(255, 255, 255, 255).withOpacity(0),
+                              // Color.fromARGB(255, 140, 0, 255).withOpacity(0.005),
+                            ]),
+                      ),
+                    ),
+                  ))
+                ]),
               ),
             ),
             bottomNavigationBar: Consumer<UserIsOn>(
-              builder: (context, userison, child) =>
-                  userison.isON ? child! : SizedBox(),
-              child: mainbottomnav(),
-            ),
+                builder: (context, userison, child) =>
+                    userison.isON ? child! : const SizedBox(),
+                child: Stack(
+                  children: [
+                    Mainbottomnav(
+                      key: ValueKey(_currentRoute),
+                      pushNameonApp: pushNameonApp,
+                      activeicon: returnCurrentActiveIcon(),
+                    ),
+                    Positioned.fill(
+                        child: IgnorePointer(
+                      child: Container(
+                        decoration: BoxDecoration(
+                          gradient: LinearGradient(
+                              begin: Alignment.centerLeft,
+                              end: Alignment.centerRight,
+                              stops: const [
+                                0,
+                                .10,
+                                .50,
+                                .90,
+                                1
+                              ],
+                              colors: [
+                                const Color.fromARGB(255, 255, 0, 150)
+                                    .withOpacity(0.005),
+                                const Color.fromARGB(255, 255, 255, 255)
+                                    .withOpacity(0.000),
+                                const Color.fromARGB(255, 255, 0, 150)
+                                    .withOpacity(0.005),
+                                const Color.fromARGB(255, 255, 255, 255)
+                                    .withOpacity(0.000),
+                                const Color.fromARGB(255, 255, 0, 150)
+                                    .withOpacity(0.005),
+                                // Color.fromARGB(255, 162, 0, 255).withOpacity(0.005),
+                                // Color.fromARGB(255, 255, 255, 255).withOpacity(0),
+                                // Color.fromARGB(255, 255, 255, 255).withOpacity(0),
+                                // Color.fromARGB(255, 140, 0, 255).withOpacity(0.005),
+                              ]),
+                        ),
+                      ),
+                    ))
+                  ],
+                )),
           )),
     );
   }
 }
 
-class mainbottomnav extends StatefulWidget {
-  int activeicon;
-  mainbottomnav({Key? key, this.activeicon = 0}) : super(key: key);
+class Mainbottomnav extends StatefulWidget {
+  final int activeicon;
+  final Function(String name) pushNameonApp;
+  const Mainbottomnav(
+      {Key? key, required this.activeicon, required this.pushNameonApp})
+      : super(key: key);
 
   @override
-  _mainbottomnavState createState() => _mainbottomnavState();
+  _MainbottomnavState createState() => _MainbottomnavState();
 }
 
-class _mainbottomnavState extends State<mainbottomnav> {
+class _MainbottomnavState extends State<Mainbottomnav> {
+  late int activeicon = widget.activeicon - 1;
+
+  @override
+  void initState() {
+    super.initState();
+  }
+
   void pushNamed(String named) {
     Navigator.of(navigatorKey.currentContext!).pushNamed(named);
   }
 
   @override
   Widget build(BuildContext context) {
+    activeicon = widget.activeicon - 1;
     return SizedBox(
         height: fontSizeNumber(0) * 3.022099448,
         child: BottomAppBar(
@@ -251,20 +373,20 @@ class _mainbottomnavState extends State<mainbottomnav> {
           mainAxisAlignment: MainAxisAlignment.spaceAround,
           children: [
             IconButton(
-              key: ValueKey("${widget.activeicon == 0}home"),
+              key: ValueKey("${activeicon == 0}home"),
               icon: GradientTextspace(
                 gradient: LinearGradient(
                     begin: Alignment.bottomCenter,
                     end: Alignment.topCenter,
-                    stops: [0, 1],
-                    colors: widget.activeicon == 0
+                    stops: const [0, 1],
+                    colors: activeicon == 0
                         ? [
-                            Color.fromARGB(255, 10, 0, 6),
-                            Color.fromARGB(255, 15, 0, 9),
+                            const Color.fromARGB(255, 10, 0, 6),
+                            const Color.fromARGB(255, 15, 0, 9),
                           ]
                         : [
-                            Color.fromARGB(255, 194, 186, 191),
-                            Color.fromARGB(255, 190, 180, 186),
+                            const Color.fromARGB(255, 194, 186, 191),
+                            const Color.fromARGB(255, 190, 180, 186),
                           ]),
                 textspace: SvgPicture.asset(
                   "assets/platter/house.svg",
@@ -273,27 +395,27 @@ class _mainbottomnavState extends State<mainbottomnav> {
                 ),
               ),
               onPressed: () {
-                setState(() {
-                  widget.activeicon = 0;
-                });
-                pushNamed('/second');
+                if (activeicon != 0) {
+                  widget.pushNameonApp('/second');
+                  pushNamed('/second');
+                }
               },
             ),
             IconButton(
-              key: ValueKey("${widget.activeicon == 1}search"),
+              key: ValueKey("${activeicon == 1}search"),
               icon: GradientTextspace(
                 gradient: LinearGradient(
                     begin: Alignment.bottomCenter,
                     end: Alignment.topCenter,
-                    stops: [0, 1],
-                    colors: widget.activeicon == 1
+                    stops: const [0, 1],
+                    colors: activeicon == 1
                         ? [
-                            Color.fromARGB(255, 10, 0, 6),
-                            Color.fromARGB(255, 15, 0, 9),
+                            const Color.fromARGB(255, 10, 0, 6),
+                            const Color.fromARGB(255, 15, 0, 9),
                           ]
                         : [
-                            Color.fromARGB(255, 194, 186, 191),
-                            Color.fromARGB(255, 190, 180, 186),
+                            const Color.fromARGB(255, 194, 186, 191),
+                            const Color.fromARGB(255, 190, 180, 186),
                           ]),
                 textspace: SvgPicture.asset(
                   "assets/platter/search.svg",
@@ -302,27 +424,27 @@ class _mainbottomnavState extends State<mainbottomnav> {
                 ),
               ),
               onPressed: () {
-                setState(() {
-                  widget.activeicon = 1;
-                });
-                pushNamed('/search');
+                if (activeicon != 1) {
+                  widget.pushNameonApp('/search');
+                  pushNamed('/search');
+                }
               },
             ),
             IconButton(
-              key: ValueKey("${widget.activeicon == 2}assistance"),
+              key: ValueKey("${activeicon == 2}assistance"),
               icon: GradientTextspace(
                 gradient: LinearGradient(
                     begin: Alignment.bottomCenter,
                     end: Alignment.topCenter,
-                    stops: [0, 1],
-                    colors: widget.activeicon == 2
+                    stops: const [0, 1],
+                    colors: activeicon == 2
                         ? [
-                            Color.fromARGB(255, 10, 0, 6),
-                            Color.fromARGB(255, 15, 0, 9),
+                            const Color.fromARGB(255, 10, 0, 6),
+                            const Color.fromARGB(255, 15, 0, 9),
                           ]
                         : [
-                            Color.fromARGB(255, 194, 186, 191),
-                            Color.fromARGB(255, 190, 180, 186),
+                            const Color.fromARGB(255, 194, 186, 191),
+                            const Color.fromARGB(255, 190, 180, 186),
                           ]),
                 textspace: SvgPicture.asset(
                   "assets/platter/library.svg",
@@ -331,10 +453,10 @@ class _mainbottomnavState extends State<mainbottomnav> {
                 ),
               ),
               onPressed: () {
-                setState(() {
-                  widget.activeicon = 2;
-                });
-                pushNamed('/assistance');
+                if (activeicon != 2) {
+                  widget.pushNameonApp('/assistance');
+                  pushNamed('/assistance');
+                }
               },
             ),
           ],
@@ -343,8 +465,7 @@ class _mainbottomnavState extends State<mainbottomnav> {
 }
 
 class Mainappbar extends StatelessWidget {
-  final GlobalKey<ScaffoldState> scaffoldkey;
-  Mainappbar({Key? key, required this.scaffoldkey}) : super(key: key);
+  const Mainappbar({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -352,22 +473,23 @@ class Mainappbar extends StatelessWidget {
       elevation: 0,
 
       bottom: PreferredSize(
-          child: Container(
-            color: Color(0xFFF5F6F8),
-            height: PixelNumberfromFigma(1),
-          ),
-          preferredSize: Size.fromHeight(PixelNumberfromFigma(1))),
+        preferredSize: Size.fromHeight(pixelNumberfromFigma(1)),
+        child: Container(
+          color: const Color(0xFFF5F6F8),
+          height: pixelNumberfromFigma(1),
+        ),
+      ),
       leading: Row(children: [
         IconButton(
           icon: ConstrainedBox(
               constraints: BoxConstraints(maxHeight: fontSizeNumber(3.000001)),
               child: SvgPicture.asset(
                 "assets/platter/menu.svg",
-                color: Color(0xFF3C3C3C),
+                color: const Color(0xFF3C3C3C),
                 height: fontSizeNumber(0) * 1.183898974,
               )),
           onPressed: () {
-            scaffoldkey.currentState!.openDrawer();
+            scaffoldKey.currentState!.openDrawer();
           },
         ),
       ]),

@@ -7,9 +7,9 @@
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:561889806891:android:2d1b2193e43d067844786e",
+        "mobilesdk_app_id": "1:561889806891:android:bdc287fb150eda3844786e",
         "android_client_info": {
-          "package_name": "com.example.p_l_atter"
+          "package_name": "com.sotoarmando.p_l_atter"
         }
       },
       "oauth_client": [

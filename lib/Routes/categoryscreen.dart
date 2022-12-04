@@ -50,8 +50,8 @@ class Categoryscreen extends StatelessWidget {
                   aspectRatio: 320 / 74,
                   child: Container(
                       padding: EdgeInsets.only(
-                          left: PixelNumberfromFigma(15),
-                          right: PixelNumberfromFigma(28)),
+                          left: pixelNumberfromFigma(15),
+                          right: pixelNumberfromFigma(28)),
                       alignment: Alignment.centerLeft,
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -78,8 +78,8 @@ class Categoryscreen extends StatelessWidget {
                   aspectRatio: 320 / 38,
                   child: Container(
                       padding: EdgeInsets.only(
-                          left: PixelNumberfromFigma(15),
-                          right: PixelNumberfromFigma(28)),
+                          left: pixelNumberfromFigma(15),
+                          right: pixelNumberfromFigma(28)),
                       alignment: Alignment.center,
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -119,8 +119,8 @@ class Categoryscreen extends StatelessWidget {
                   aspectRatio: 320 / 38,
                   child: Container(
                       padding: EdgeInsets.only(
-                          left: PixelNumberfromFigma(15),
-                          right: PixelNumberfromFigma(28)),
+                          left: pixelNumberfromFigma(15),
+                          right: pixelNumberfromFigma(28)),
                       alignment: Alignment.center,
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -160,8 +160,8 @@ class Categoryscreen extends StatelessWidget {
                   aspectRatio: 320 / 38,
                   child: Container(
                       padding: EdgeInsets.only(
-                          left: PixelNumberfromFigma(15),
-                          right: PixelNumberfromFigma(28)),
+                          left: pixelNumberfromFigma(15),
+                          right: pixelNumberfromFigma(28)),
                       alignment: Alignment.center,
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -188,10 +188,10 @@ class Categoryscreen extends StatelessWidget {
                 }),
                 Container(
                     padding: EdgeInsets.only(
-                        left: PixelNumberfromFigma(15),
-                        top: PixelNumberfromFigma(7.5),
-                        bottom: PixelNumberfromFigma(7.5),
-                        right: PixelNumberfromFigma(15)),
+                        left: pixelNumberfromFigma(15),
+                        top: pixelNumberfromFigma(7.5),
+                        bottom: pixelNumberfromFigma(7.5),
+                        right: pixelNumberfromFigma(15)),
                     child: Row(
                       children: [
                         InkWell(
@@ -210,29 +210,86 @@ class Categoryscreen extends StatelessWidget {
                     ))
               ],
             )),
-            Consumer<Requestor>(builder: (context, requestor, widget) {
-              return Loadingscreen(
-                seconds: 2,
-                white: !((requestor
-                                .requestResponses[
-                                    "${preferencesModel.categoryScreen} ${o[preferencesModel.categoryScreen][0]}"]
-                                ?.keys ??
-                            [])
-                        .isNotEmpty &&
-                    (requestor
-                                .requestResponses[
-                                    "${preferencesModel.categoryScreen} ${o[preferencesModel.categoryScreen][1]}"]
-                                ?.keys ??
-                            [])
-                        .isNotEmpty &&
-                    (requestor
-                                .requestResponses[
-                                    "${preferencesModel.categoryScreen} ${o[preferencesModel.categoryScreen][2]}"]
-                                ?.keys ??
-                            [])
-                        .isNotEmpty),
-              );
-            }),
+
+            Positioned.fill(
+                child: IgnorePointer(
+              child: Container(
+                decoration: BoxDecoration(
+                  gradient: LinearGradient(
+                      begin: Alignment.centerLeft,
+                      end: Alignment.centerRight,
+                      stops: const [
+                        0,
+                        .10,
+                        .50,
+                        .90,
+                        1
+                      ],
+                      colors: [
+                        const Color.fromARGB(255, 255, 0, 150)
+                            .withOpacity(0.005),
+                        const Color.fromARGB(255, 255, 255, 255)
+                            .withOpacity(0.000),
+                        const Color.fromARGB(255, 255, 0, 150)
+                            .withOpacity(0.005),
+                        const Color.fromARGB(255, 255, 255, 255)
+                            .withOpacity(0.000),
+                        const Color.fromARGB(255, 255, 0, 150)
+                            .withOpacity(0.005),
+                        // Color.fromARGB(255, 162, 0, 255).withOpacity(0.005),
+                        // Color.fromARGB(255, 255, 255, 255).withOpacity(0),
+                        // Color.fromARGB(255, 255, 255, 255).withOpacity(0),
+                        // Color.fromARGB(255, 140, 0, 255).withOpacity(0.005),
+                      ]),
+                ),
+              ),
+            )),
+            Positioned.fill(
+                child: IgnorePointer(
+              child: DecoratedBox(
+                decoration: BoxDecoration(
+                  gradient: LinearGradient(
+                      begin: Alignment.bottomCenter,
+                      end: Alignment.topCenter,
+                      stops: const [
+                        0,
+                        .25,
+                        .75,
+                        1
+                      ],
+                      colors: [
+                        Color.fromARGB(255, 150, 0, 255).withOpacity(0.005),
+                        Color.fromARGB(255, 255, 255, 255).withOpacity(0.005),
+                        Color.fromRGBO(255, 255, 255, 1).withOpacity(0.005),
+                        Color.fromARGB(255, 255, 0, 255).withOpacity(0.005),
+                      ]),
+                ),
+              ),
+            ))
+
+            // Consumer<Requestor>(builder: (context, requestor, widget) {
+            //   return Loadingscreen(
+            //     seconds: 3,
+            //     white: !((requestor
+            //                     .requestResponses[
+            //                         "${preferencesModel.categoryScreen} ${o[preferencesModel.categoryScreen][0]}"]
+            //                     ?.keys ??
+            //                 [])
+            //             .isNotEmpty &&
+            //         (requestor
+            //                     .requestResponses[
+            //                         "${preferencesModel.categoryScreen} ${o[preferencesModel.categoryScreen][1]}"]
+            //                     ?.keys ??
+            //                 [])
+            //             .isNotEmpty &&
+            //         (requestor
+            //                     .requestResponses[
+            //                         "${preferencesModel.categoryScreen} ${o[preferencesModel.categoryScreen][2]}"]
+            //                     ?.keys ??
+            //                 [])
+            //             .isNotEmpty),
+            //   );
+            // }),
           ],
         ));
   }
